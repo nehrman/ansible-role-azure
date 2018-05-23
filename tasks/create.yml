@@ -13,7 +13,7 @@
         direction: Inbound
       - name: RDP
         protocol: Tcp
-        destination_port_range: 389
+        destination_port_range: 3389
         access: Allow
         priority: 102
         direction: Inbound
