@@ -112,7 +112,7 @@
         frontend_ip_configuration: "{{ az_loadbalancer_name }}-frontend"
         probe: "{{ az_loadbalancer_name }}-probe"
         load_distribution: Default
-        backend_address_pools: "{{ az_loadbalancer_name }}-web-srv"
+        backend_address_pool: "{{ az_loadbalancer_name }}-web-srv"
         frontend_port: 80
         backend_port: 8080
         idle_timeout: 4
