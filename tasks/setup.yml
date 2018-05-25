@@ -97,7 +97,7 @@
     location: "{{ az_location }}"
     frontend_ip_configurations:
       - name: "{{ az_loadbalancer_name }}-frontend"
-        public_ip_address: "{{ r_lb_public_ip.state.ip_address }}"
+        public_ip_address: "{{ az_lb_public_ip_name }}"
     backend_address_pools:
       - name: "{{ az_loadbalancer_name }}-web-srv"
     probes:
