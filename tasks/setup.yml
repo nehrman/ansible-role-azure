@@ -104,7 +104,7 @@
       - name: "{{ az_loadbalancer_name }}-probe"
         protocol: Tcp
         port: 8080
-        interval: 1
+        interval: 5
         fail_count: 3
     # load_balacing_rules:
     #   - name: "{{ az_loadbalancer_name }}-rule"
