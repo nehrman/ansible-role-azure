@@ -109,7 +109,7 @@
     load_balacing_rules:
       - name: "{{ az_loadbalancer_name }}-rule"
         # protocol: Tcp
-        frontend_ip_configuration: "{{ az_loadbalancer_name }}-frontend"
+        frontend_ip_configuration: "{{ r_lb_public_ip.state.ip.address"
         probe: "{{ az_loadbalancer_name }}-probe"
         # load_distribution: Default
         backend_address_pool: "{{ az_loadbalancer_name }}-web-srv"
