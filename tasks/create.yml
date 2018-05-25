@@ -82,9 +82,13 @@
     name: "{{ az_vm_nic_name }}"
     virtual_network: "{{ az_virtualnet_name }}"
     subnet: "{{ az_subnet_name }}"
-    public_ip_name: "{{ az_public_ip_name }}"
     security_group: "{{ az_secgroup_name }}"
-    load_balancer_backend_address_pools: "{{ az_loadbalancer_name }}-web-srv"
+    ip_configurations:
+      name: "{{ az_vm_nic_name }}-conf"
+      public_ip_name: "{{ az_public_ip_name }}"
+      load_balancer_backend_address_pools:
+        - name: "{{ az_loadbalancer_name }}-web-srv"
+          load_balancer: "{{ az_loadbalancer_name }}"
   when: instance_role == "web"
 
 - name: "Create Virtual Machine {{ az_vm_name }}"
