@@ -78,5 +78,5 @@
   local_action:
     module: azure_rm_availabilityset
     resource_group: "{{ az_resourcegroup_name }}"
-    name: "{{ az_az_availabilitysets_name }}"
+    name: "{{ az_availabilitysets_name }}"
     location: "{{ az_location }}"
