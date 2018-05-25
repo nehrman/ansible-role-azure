@@ -4,4 +4,5 @@
     module: azure_rm_resourcegroup
     location: "{{ az_location }}"
     name: "{{ az_resourcegroup_name }}"
+    force: yes
     state: absent
