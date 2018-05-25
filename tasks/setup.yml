@@ -36,43 +36,20 @@
 #      customer: "{{ az_customer }}"
 #    register: return_azsubnet
 
-- name:  Create {{ az_secgroup_name }} Security Group on {{ az_region }}
+- name: Create "{{ az_storageaccount_name }}" Storage Account for "{{ az_resourcegroup_name }}"
   local_action:
-    module: azure_rm_securitygroup
+    module: azure_rm_storageaccount
+    name: "{{ az_storageaccount_name }}"
     resource_group: "{{ az_resourcegroup_name }}"
-    name: "{{ az_secgroup_name }}"
-    rules:
-      - name: SSH
-        protocol: Tcp
-        destination_port_range: 22
-        access: Allow
-        priority: 101
-        direction: Inbound
-      - name: RDP
-        protocol: Tcp
-        destination_port_range: 3389
-        access: Allow
-        priority: 102
-        direction: Inbound
-      - name: WINRM
-        protocol: Tcp
-        destination_port_range: 5986
-        access: Allow
-        priority: 103
-        direction: Inbound
-      - name: HTTP
-        protocol: Tcp
-        destination_port_range: 80
-        access: Allow
-        priority: 104
-        direction: Inbound
-      - name: HTTPS
-        protocol: Tcp
-        destination_port_range: 443
-        access: Allow
-        priority: 105
-        direction: Inbound
-#    register: return_azsubnet
+    location: "{{ az_location }}"
+    type: "{{ az_storageaccount_type }}"
+    kind: "{{ az_storageaccount_kind }}"
+#    access_tier: "{{ az_storageaccount_tier }}"
+    state: present
+    tags:
+      purpose: "{{ az_environment }}"
+#      customer: "{{ az_customer }}"
+#    register: return_azstoaccnt
 
 - name: Create {{ az_availabilitysets_name }}
   local_action:

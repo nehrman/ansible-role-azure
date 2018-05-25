@@ -3,37 +3,13 @@
   local_action:
     module: azure_rm_securitygroup
     resource_group: "{{ az_resourcegroup_name }}"
-    name: "{{ az_secgroup_name }}"
+    name: "{{ az_secgroup_name }}-{{ instance_role }}"
     rules:
       - name: SSH
         protocol: Tcp
         destination_port_range: 22
         access: Allow
         priority: 101
-        direction: Inbound
-      - name: RDP
-        protocol: Tcp
-        destination_port_range: 3389
-        access: Allow
-        priority: 102
-        direction: Inbound
-      - name: WINRM
-        protocol: Tcp
-        destination_port_range: 5986
-        access: Allow
-        priority: 103
-        direction: Inbound
-      - name: HTTP
-        protocol: Tcp
-        destination_port_range: 80
-        access: Allow
-        priority: 104
-        direction: Inbound
-      - name: HTTPS
-        protocol: Tcp
-        destination_port_range: 443
-        access: Allow
-        priority: 105
         direction: Inbound
       - name: Tomcat
         protocol: Tcp
@@ -64,17 +40,6 @@
     allocation_method: "{{ az_public_ip_method }}"
     name: "{{ az_public_ip_name }}"
 
-- name: Create NIC for DBs Servers
-  local_action:
-    module: azure_rm_networkinterface
-    resource_group: "{{ az_resourcegroup_name }}"
-    name: "{{ az_vm_nic_name }}"
-    virtual_network: "{{ az_virtualnet_name }}"
-    subnet: "{{ az_subnet_name }}"
-    public_ip_name: "{{ az_public_ip_name }}"
-    security_group: "{{ az_secgroup_name }}"
-  when: instance_role == "db"
-
 - name: Create NIC for Web servers
   local_action:
     module: azure_rm_networkinterface
@@ -89,33 +54,6 @@
         load_balancer_backend_address_pools:
           - name: "{{ az_loadbalancer_name }}-web-srv"
             load_balancer: "{{ az_loadbalancer_name }}"
-  when: instance_role == "web"
-
-- name: "Create Virtual Machine {{ az_vm_name }}"
-  local_action:
-    module: azure_rm_virtualmachine
-    resource_group: "{{ az_resourcegroup_name }}"
-    location: "{{ az_location }}"
-    name: "{{ az_vm_name }}"
-    vm_size: "{{ az_vm_size }}"
-    os_type: "Linux"
-    storage_account_name: "{{ az_storageaccount_name }}"
-    network_interface_names: "{{ az_vm_nic_name }}"
-    admin_username: "{{ az_vm_admin_user }}"
-    admin_password: "{{ az_vm_admin_pwd }}"
-    ssh_password_enabled: "{{ az_ssh_pwd_enabled }}"
-#    ssh_public_keys:
-#        - path: "/home/{{ az_vm_admin_user }}/.ssh/authorized_key"
-#          key_data: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCrXhsaeKHmorJxS/7GJ9zUK4p3XOD5e5WBiMtXydftFpBbR6e0nB3NO9fS/qwimqTuTnBrQkz+WZJ3YOIdnp4/Nb2b43S1rg7toQByHDehCTE7BT59bL2zy0zSrT12wkfqNG71m50TXDaPDzvy1r600UmZCKrSOGOx7Adel8AiHIxYiU7TJBcKdqUVqULHohSBT5/jYxPGP0efg1KZfajnKRegTBelvCToaNAtKfwEcRhEfW2+05XEbRWF4gIhBatoVv42BnAhPNLNTUIjZIhTxbyVvkABIWNAoWWAccsFQG567DAI6ftTjwrK1Zyu3NIByPyqSmREUcjyGidkS7/1 ansible@ans01.testlab.local"
-    image:
-      offer: "{{ az_image_offer }}"
-      publisher: "{{ az_image_publisher }}"
-      sku: "{{ az_image_sku }}"
-      version: "{{ az_image_version }}"
-    tags:
-      purpose: "{{ az_environment }}"
-      application: "{{ az_application }}"
-  when: instance_role == "db"
 
 - name: "Create Virtual Machine {{ az_vm_name }}"
   local_action:
@@ -138,7 +76,6 @@
     tags:
       purpose: "{{ az_environment }}"
       application: "{{ az_application }}"
-  when: instance_role == "web"
 
 - name: Add instances to inventory
   local_action:

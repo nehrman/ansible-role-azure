@@ -1,0 +1,74 @@
+---
+- name:  Create {{ az_secgroup_name }} Security Group on {{ az_region }}
+  local_action:
+    module: azure_rm_securitygroup
+    resource_group: "{{ az_resourcegroup_name }}-{{ instance_role }}"
+    name: "{{ az_secgroup_name }}"
+    rules:
+      - name: SSH
+        protocol: Tcp
+        destination_port_range: 22
+        access: Allow
+        priority: 101
+        direction: Inbound
+      - name: PostgreSQL
+        protocol: Tcp
+        destination_port_range: 5432
+        access: Allow
+        priority: 102
+        direction: Inbound
+
+- name: Create public ip
+  local_action:
+    module: azure_rm_publicipaddress
+    resource_group: "{{ az_resourcegroup_name }}"
+    allocation_method: "{{ az_public_ip_method }}"
+    name: "{{ az_public_ip_name }}"
+
+- name: Create NIC for DBs Servers
+  local_action:
+    module: azure_rm_networkinterface
+    resource_group: "{{ az_resourcegroup_name }}"
+    name: "{{ az_vm_nic_name }}"
+    virtual_network: "{{ az_virtualnet_name }}"
+    subnet: "{{ az_subnet_name }}"
+    public_ip_name: "{{ az_public_ip_name }}"
+    security_group: "{{ az_secgroup_name }}"
+
+- name: "Create Virtual Machine {{ az_vm_name }}"
+  local_action:
+    module: azure_rm_virtualmachine
+    resource_group: "{{ az_resourcegroup_name }}"
+    location: "{{ az_location }}"
+    name: "{{ az_vm_name }}"
+    vm_size: "{{ az_vm_size }}"
+    os_type: "Linux"
+    storage_account_name: "{{ az_storageaccount_name }}"
+    network_interface_names: "{{ az_vm_nic_name }}"
+    admin_username: "{{ az_vm_admin_user }}"
+    admin_password: "{{ az_vm_admin_pwd }}"
+    ssh_password_enabled: "{{ az_ssh_pwd_enabled }}"
+#    ssh_public_keys:
+#        - path: "/home/{{ az_vm_admin_user }}/.ssh/authorized_key"
+#          key_data: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCrXhsaeKHmorJxS/7GJ9zUK4p3XOD5e5WBiMtXydftFpBbR6e0nB3NO9fS/qwimqTuTnBrQkz+WZJ3YOIdnp4/Nb2b43S1rg7toQByHDehCTE7BT59bL2zy0zSrT12wkfqNG71m50TXDaPDzvy1r600UmZCKrSOGOx7Adel8AiHIxYiU7TJBcKdqUVqULHohSBT5/jYxPGP0efg1KZfajnKRegTBelvCToaNAtKfwEcRhEfW2+05XEbRWF4gIhBatoVv42BnAhPNLNTUIjZIhTxbyVvkABIWNAoWWAccsFQG567DAI6ftTjwrK1Zyu3NIByPyqSmREUcjyGidkS7/1 ansible@ans01.testlab.local"
+    image:
+      offer: "{{ az_image_offer }}"
+      publisher: "{{ az_image_publisher }}"
+      sku: "{{ az_image_sku }}"
+      version: "{{ az_image_version }}"
+    tags:
+      purpose: "{{ az_environment }}"
+      application: "{{ az_application }}"
+
+- name: Add instances to inventory
+  local_action:
+    module: add_host
+    name: "{{ azure_vm.properties.networkProfile.networkInterfaces[0].properties.ipConfigurations[0].properties.publicIPAddress.properties.ipAddress }}"
+    ansible_host: "{{ azure_vm.properties.networkProfile.networkInterfaces[0].properties.ipConfigurations[0].properties.publicIPAddress.properties.ipAddress }}"
+    ansible_user: "{{ instance_ansible_user }}"
+    ansible_port: "{{ instance_ansible_port }}"
+    groups:
+      - "az"
+      - "{{ instance_role }}"
+      - "{{ os_type }}"
+#         - "tag_Environment_{{ item.item.Environment }}"

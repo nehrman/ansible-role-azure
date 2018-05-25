@@ -1,0 +1,11 @@
+---
+- name:  Create {{ az_resourcegroup_name }} Resource Group on {{ az_region }}
+  local_action:
+    module: azure_rm_resourcegroup
+    location: "{{ az_location }}"
+    name: "{{ az_resourcegroup_name }}"
+    state: absent
+    tags:
+      purpose: "{{ az_environment }}"
+#      customer: "{{ az_customer }}"
+#   register: return_azrg
