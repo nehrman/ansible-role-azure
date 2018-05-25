@@ -87,6 +87,7 @@
     resource_group: "{{ az_resourcegroup_name }}"
     allocation_method: "{{ az_public_ip_method }}"
     name: "{{ az_lb_public_ip_name }}"
+  register: r_lb_public_ip
 
 - name: Create {{ az_loadbalancer_name }}
   local_action:
@@ -95,12 +96,23 @@
     name: "{{ az_loadbalancer_name }}"
     location: "{{ az_location }}"
     public_ip: "{{ az_lb_public_ip_name }}"
-    probe_protocol: Tcp
-    probe_port: 8080
-    probe_interval: 10
-    probe_fail_count: 3
-    protocol: Tcp
-    load_distribution: Default
-    frontend_port: 80
-    backend_port: 8080
-    idle_timeout: 4
+    frontend_ip_configurations:
+      - name: "{{ az_loadbalancer_name }}-frontend"
+        public_ip_address: "{{ r_lb_public_ip_state.ip_address }}"
+    backend_address_pools:
+      - name: "{{ az_loadbalancer_name }}-web-srv"
+    probes:
+      - name: "{{ az_loadbalancer_name }}-probe"
+        protocol: Tcp
+        port: 8080
+        interval: 1
+        fail_count: 3
+    load_balacing_rules:
+      - name: "{{ az_loadbalancer_name }}-rule"
+        protocol: Tcp
+        probe: "{{ az_loadbalancer_name }}-probe"
+        load_distribution: Default
+        backend_address_pools: "{{ az_loadbalancer_name }}-web-srv"
+        frontend_port: 80
+        backend_port: 8080
+        idle_timeout: 4
