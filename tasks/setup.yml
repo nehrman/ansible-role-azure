@@ -94,7 +94,7 @@
     resource_group: "{{ az_resourcegroup_name }}"
     name: "{{ az_loadbalancer_name }}"
     location: "{{ az_location }}"
-    publicip: "{{ az_lb_public_ip_name }}"
+    public_ip: "{{ az_lb_public_ip_name }}"
     probe_protocol: Tcp
     probe_port: 8080
     probe_interval: 10
