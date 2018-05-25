@@ -108,12 +108,12 @@
         fail_count: 3
     load_balacing_rules:
       - name: "{{ az_loadbalancer_name }}-rule"
-        protocol: Tcp
+        # protocol: Tcp
         frontend_ip_configuration: "{{ az_loadbalancer_name }}-frontend"
         probe: "{{ az_loadbalancer_name }}-probe"
-        load_distribution: Default
+        # load_distribution: Default
         backend_address_pool: "{{ az_loadbalancer_name }}-web-srv"
-        frontend_port: 80
-        backend_port: 8080
-        idle_timeout: 4
+        # frontend_port: 80
+        # backend_port: 8080
+        # idle_timeout: 4
     state: present
