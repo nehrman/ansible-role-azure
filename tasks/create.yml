@@ -64,7 +64,7 @@
     allocation_method: "{{ az_public_ip_method }}"
     name: "{{ az_public_ip_name }}"
 
-- name: Create NIC
+- name: Create NIC for DBs Servers
   local_action:
     module: azure_rm_networkinterface
     resource_group: "{{ az_resourcegroup_name }}"
@@ -75,7 +75,7 @@
     security_group: "{{ az_secgroup_name }}"
   when: instance_role == "db"
 
-- name: Create NIC
+- name: Create NIC for Web servers
   local_action:
     module: azure_rm_networkinterface
     resource_group: "{{ az_resourcegroup_name }}"
