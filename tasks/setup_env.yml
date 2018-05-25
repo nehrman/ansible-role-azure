@@ -49,7 +49,7 @@
     tags:
       purpose: "{{ az_environment }}"
 #      customer: "{{ az_customer }}"
-#    register: return_azstoaccnt
+#    register: return_azstoaccn
 
 - name: Create {{ az_availabilitysets_name }}
   local_action:
