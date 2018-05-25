@@ -95,7 +95,6 @@
     resource_group: "{{ az_resourcegroup_name }}"
     name: "{{ az_loadbalancer_name }}"
     location: "{{ az_location }}"
-    public_ip: "{{ az_lb_public_ip_name }}"
     frontend_ip_configurations:
       - name: "{{ az_loadbalancer_name }}-frontend"
         public_ip_address: "{{ r_lb_public_ip.state.ip_address }}"
