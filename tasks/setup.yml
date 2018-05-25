@@ -50,7 +50,7 @@
         direction: Inbound
       - name: RDP
         protocol: Tcp
-        destination_port_range: 389
+        destination_port_range: 3389
         access: Allow
         priority: 102
         direction: Inbound
@@ -73,3 +73,10 @@
         priority: 105
         direction: Inbound
 #    register: return_azsubnet
+
+  - name: Create {{ az_availabilitysets_name }}
+    local_action:
+      module: azure_rm_availabilityset
+      resource_group: "{{ az_resourcegroup_name }}"
+      name: "{{ az_az_availabilitysets_name }}"
+      location: "{{ az_location }}"

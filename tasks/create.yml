@@ -98,16 +98,17 @@
     tags:
       purpose: "{{ az_environment }}"
       application: "{{ az_application }}"
-  when: os_type == "linux"
+  when: instance_role == "db"
 
 - name: "Create Virtual Machine {{ az_vm_name }}"
   local_action:
     module: azure_rm_virtualmachine
     resource_group: "{{ az_resourcegroup_name }}"
     location: "{{ az_location }}"
+    availability_set: "{{ az_availabilitysets_name }}"
     name: "{{ az_vm_name }}"
     vm_size: "{{ az_vm_size }}"
-    os_type: "Windows"
+    os_type: "Linux"
     storage_account_name: "{{ az_storageaccount_name }}"
     network_interface_names: "{{ az_vm_nic_name }}"
     admin_username: "{{ az_vm_admin_user }}"
@@ -120,7 +121,7 @@
     tags:
       purpose: "{{ az_environment }}"
       application: "{{ az_application }}"
-  when: os_type == "windows"
+  when: instance_role == "web"
 
 - name: Add instances to inventory
   local_action:
