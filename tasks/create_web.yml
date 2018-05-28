@@ -3,7 +3,7 @@
   local_action:
     module: azure_rm_securitygroup
     resource_group: "{{ az_resourcegroup_name }}"
-    name: "{{ az_secgroup_name }}-{{ instance_role }}"
+    name: "{{ az_secgroup_name }}"
     rules:
       - name: SSH
         protocol: Tcp
