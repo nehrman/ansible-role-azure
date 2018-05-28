@@ -21,7 +21,7 @@
         protocol: Tcp
         destination_port_range: 80
         access: Allow
-        priority: 101
+        priority: 102
         direction: Inbound
 
 - name: Create public ip
