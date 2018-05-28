@@ -18,21 +18,6 @@
         priority: 106
         direction: Inbound
 
-- name: Create "{{ az_storageaccount_name }}" Storage Account for "{{ az_resourcegroup_name }}"
-  local_action:
-    module: azure_rm_storageaccount
-    name: "{{ az_storageaccount_name }}"
-    resource_group: "{{ az_resourcegroup_name }}"
-    location: "{{ az_location }}"
-    type: "{{ az_storageaccount_type }}"
-    kind: "{{ az_storageaccount_kind }}"
-#    access_tier: "{{ az_storageaccount_tier }}"
-    state: present
-    tags:
-      purpose: "{{ az_environment }}"
-#      customer: "{{ az_customer }}"
-#    register: return_azstoaccnt
-
 - name: Create public ip
   local_action:
     module: azure_rm_publicipaddress
