@@ -29,7 +29,7 @@ az_image_publisher: "OpenLogic"
 az_image_sku: "7.3"
 az_image_version: latest
 az_application: "{{ instance_role }}"
-az_secgroup_name: "{{ az_environment }}_-{{ instance_role }}_secgroup"
+az_secgroup_name: "{{ az_environment }}_{{ instance_role }}_secgroup"
 os_type: "linux"
 az_ssh_pwd_enabled: "false"
 az_availabilitysets_name: "{{ customer }}_{{ az_environment }}_availsets"
