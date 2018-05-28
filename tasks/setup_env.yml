@@ -80,7 +80,7 @@
     probes:
       - name: "{{ az_loadbalancer_name }}-probe"
         protocol: Tcp
-        port: 8080
+        port: "{{ az_loadbalancer_bport }}"
         interval: 5
         fail_count: 3
     load_balancing_rules:
