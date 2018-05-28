@@ -90,7 +90,7 @@
         probe: "{{ az_loadbalancer_name }}-probe"
         load_distribution: Default
         backend_address_pool: "{{ az_loadbalancer_name }}-web-srv"
-        frontend_port: 80
-        backend_port: 80
+        frontend_port: "{{ az_loadbalancer_fport }}"
+        backend_port: "{{ az_loadbalancer_bport }}"
         idle_timeout: 4
     state: present
