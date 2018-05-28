@@ -91,6 +91,6 @@
         load_distribution: Default
         backend_address_pool: "{{ az_loadbalancer_name }}-web-srv"
         frontend_port: 80
-        backend_port: 8080
+        backend_port: 80
         idle_timeout: 4
     state: present
