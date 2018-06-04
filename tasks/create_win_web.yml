@@ -29,6 +29,7 @@
         access: Allow
         priority: 103
         direction: Inbound
+    run_once: yes
 
 - name: Create public ip
   local_action:
