@@ -65,6 +65,7 @@
     network_interface_names: "{{ az_vm_nic_name }}"
     admin_username: "{{ az_vm_admin_user }}"
     admin_password: "{{ az_vm_admin_pwd }}"
+    managed_disk_type: "{{ az_managed_disk_type }}"
     image:
       offer: "{{ az_image_offer }}"
       publisher: "{{ az_image_publisher }}"
