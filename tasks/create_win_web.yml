@@ -1,0 +1,87 @@
+---
+- name:  Create {{ az_secgroup_name }} Security Group on {{ az_region }}
+  local_action:
+    module: azure_rm_securitygroup
+    resource_group: "{{ az_resourcegroup_name }}"
+    name: "{{ az_secgroup_name }}"
+    rules:
+      - name: SSH
+        protocol: Tcp
+        destination_port_range: 22
+        access: Allow
+        priority: 100
+        direction: Inbound
+      - name: WinRM
+        protocol: Tcp
+        destination_port_range: 5986
+        access: Allow
+        priority: 101
+        direction: Inbound
+      - name: Tomcat
+        protocol: Tcp
+        destination_port_range: 8080
+        access: Allow
+        priority: 102
+        direction: Inbound
+      - name: Http
+        protocol: Tcp
+        destination_port_range: 80
+        access: Allow
+        priority: 103
+        direction: Inbound
+
+- name: Create public ip
+  local_action:
+    module: azure_rm_publicipaddress
+    resource_group: "{{ az_resourcegroup_name }}"
+    allocation_method: "{{ az_public_ip_method }}"
+    name: "{{ az_public_ip_name }}"
+
+- name: Create NIC for Web servers
+  local_action:
+    module: azure_rm_networkinterface
+    resource_group: "{{ az_resourcegroup_name }}"
+    name: "{{ az_vm_nic_name }}"
+    virtual_network: "{{ az_virtualnet_name }}"
+    subnet: "{{ az_subnet_name }}"
+    security_group: "{{ az_secgroup_name }}"
+    ip_configurations:
+      - name: "{{ az_vm_nic_name }}-conf"
+        public_ip_name: "{{ az_public_ip_name }}"
+        load_balancer_backend_address_pools:
+          - name: "{{ az_loadbalancer_name }}-web-srv"
+            load_balancer: "{{ az_loadbalancer_name }}"
+
+- name: "Create Virtual Machine {{ az_vm_name }}"
+  local_action:
+    module: azure_rm_virtualmachine
+    resource_group: "{{ az_resourcegroup_name }}"
+    location: "{{ az_location }}"
+    availability_set: "{{ az_availabilitysets_name }}"
+    name: "{{ az_vm_name }}"
+    vm_size: "{{ az_vm_size }}"
+    os_type: "{{ az_os_type_vm }}"
+    storage_account_name: "{{ az_storageaccount_name }}"
+    network_interface_names: "{{ az_vm_nic_name }}"
+    admin_username: "{{ az_vm_admin_user }}"
+    admin_password: "{{ az_vm_admin_pwd }}"
+    image:
+      name: "{{ az_image_name }}"
+      resource_group: "{{ az_image_resource_group }}"
+    tags:
+      purpose: "{{ az_environment }}"
+      application: "{{ az_application }}"
+      os: "{{ az_os_type_vm }}"
+
+- name: Add instances to inventory
+  local_action:
+    module: add_host
+    name: "{{ azure_vm.properties.networkProfile.networkInterfaces[0].properties.ipConfigurations[0].properties.publicIPAddress.properties.ipAddress }}"
+    ansible_host: "{{ azure_vm.properties.networkProfile.networkInterfaces[0].properties.ipConfigurations[0].properties.publicIPAddress.properties.ipAddress }}"
+    ansible_user: "{{ instance_ansible_user }}"
+    ansible_port: "{{ instance_ansible_port }}"
+    groups:
+      - "az"
+      - "{{ instance_role }}"
+      - "{{ az_os_type_vm }}"
+#         - "tag_Environment_{{ item.item.Environment }}"
