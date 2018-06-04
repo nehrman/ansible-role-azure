@@ -60,7 +60,7 @@
     availability_set: "{{ az_availabilitysets_name }}"
     name: "{{ az_vm_name }}"
     vm_size: "{{ az_vm_size }}"
-    os_type: "Linux"
+    os_type: "{{ az_os_type_vm }}"
     storage_account_name: "{{ az_storageaccount_name }}"
     network_interface_names: "{{ az_vm_nic_name }}"
     admin_username: "{{ az_vm_admin_user }}"
@@ -73,7 +73,7 @@
     tags:
       purpose: "{{ az_environment }}"
       application: "{{ az_application }}"
-      os: "{{ os_type }}"
+      os: "{{ az_os_type_vm }}"
 
 - name: Add instances to inventory
   local_action:
@@ -85,5 +85,5 @@
     groups:
       - "az"
       - "{{ instance_role }}"
-      - "{{ os_type }}"
+      - "{{ az_os_type_vm }}"
 #         - "tag_Environment_{{ item.item.Environment }}"
