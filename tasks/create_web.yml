@@ -11,17 +11,23 @@
         access: Allow
         priority: 100
         direction: Inbound
+      - name: WinRM
+        protocol: Tcp
+        destination_port_range: 5986
+        access: Allow
+        priority: 101
+        direction: Inbound
       - name: Tomcat
         protocol: Tcp
         destination_port_range: 8080
         access: Allow
-        priority: 101
+        priority: 102
         direction: Inbound
       - name: Http
         protocol: Tcp
         destination_port_range: 80
         access: Allow
-        priority: 102
+        priority: 103
         direction: Inbound
 
 - name: Create public ip
