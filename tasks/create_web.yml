@@ -67,6 +67,7 @@
     tags:
       purpose: "{{ az_environment }}"
       application: "{{ az_application }}"
+      os: "{{ os_type }}"
 
 - name: Add instances to inventory
   local_action:
