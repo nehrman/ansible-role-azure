@@ -16,7 +16,7 @@
         destination_port_range: 5432
         access: Allow
         priority: 102
-        direction: Inbound
+        direction: Inbound 
 
 - name: Create public ip
   local_action:
