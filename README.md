@@ -1,4 +1,5 @@
 # Ansible Role for Azure
+=========================
 
 An Ansible role to configure and deploy :
   - Resource groups
@@ -13,6 +14,7 @@ An Ansible role to configure and deploy :
 It's also possible to Destroy all you have created by using this role.
 
 # Requirements
+--------------
 
 Azure SDK for Python must be installed on Ansible's venv
 
@@ -21,7 +23,8 @@ pip install azure
 Today, you need to use Ansible 2.6.0 Dev 0 if you want to register VMs to Load Balancer
 
 # Role Variables
-
+--------------
+```YAML
 ---
 customer: ""
 instance_name: db
@@ -66,15 +69,16 @@ az_image_name: "w2k12r2_template"
 az_image_resource_group: "templates"
 az_availabilitysets_sku: "Aligned"
 az_managed_disk_type: "Standard_LRS"
+```
 
-# Dependies
+# Dependencies
 
 None
 
 # Example Playbook
 
 Provision full environment:
-
+```YAML
 - name: Setup Azure Environment
   include_role:
     name: nehrman.ansible-role-azure
@@ -94,14 +98,15 @@ Provision full environment:
     az_image_name: "w2k12r2template-image"
     az_image_resource_group: "templates"
   with_sequence: count="{{ az_win_web_count }}"
-
+```
+```YAML
 Destroy environment:
 
 - name: Delete {{ az_environment }} from Azure
    include_role:
      name: nehrman.azure
      tasks_from: delete_env.yml
-
+```
 # License
 
 GPLv3
