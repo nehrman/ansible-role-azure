@@ -37,6 +37,7 @@
     resource_group: "{{ az_resourcegroup_name }}"
     allocation_method: "{{ az_public_ip_method }}"
     name: "{{ az_public_ip_name }}"
+  register: r_azure_public_ip
 
 - name: Create NIC for Web servers
   local_action:
@@ -76,12 +77,16 @@
       purpose: "{{ az_environment }}"
       application: "{{ az_application }}"
       os: "{{ az_os_type_vm }}"
+  async: 1000
+  poll: 0
 
 - name: Add instances to inventory
   local_action:
     module: add_host
-    name: "{{ azure_vm.properties.networkProfile.networkInterfaces[0].properties.ipConfigurations[0].properties.publicIPAddress.properties.ipAddress }}"
-    ansible_host: "{{ azure_vm.properties.networkProfile.networkInterfaces[0].properties.ipConfigurations[0].properties.publicIPAddress.properties.ipAddress }}"
+    # name: "{{ azure_vm.properties.networkProfile.networkInterfaces[0].properties.ipConfigurations[0].properties.publicIPAddress.properties.ipAddress }}"
+    name: "{{ az_vm_name }}"
+    ansible_host: "{{ r_azure_public_ip.state.ip_address }}"
+    # ansible_host: "{{ azure_vm.properties.networkProfile.networkInterfaces[0].properties.ipConfigurations[0].properties.publicIPAddress.properties.ipAddress }}"
     ansible_user: "{{ instance_ansible_user }}"
     ansible_port: "{{ instance_ansible_port }}"
     groups:
