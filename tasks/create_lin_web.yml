@@ -78,6 +78,7 @@
       os: "{{ az_os_type_vm }}"
   async: 1000
   poll: 0
+  register: r_azure_vm
 
 - name: Add instances to inventory
   local_action:
@@ -91,3 +92,4 @@
       - "{{ instance_role }}"
       - "{{ az_os_type_vm }}"
 #         - "tag_Environment_{{ item.item.Environment }}"
+  with_items: "{{ r_azure_vm }}"
