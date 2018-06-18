@@ -79,7 +79,7 @@
   register: r_azure_vm
 
 - debug:
-    vars: "{{ r_azure_vm }}"
+    var: r_azure_vm
 
 - name: Add instances to inventory
   local_action:
