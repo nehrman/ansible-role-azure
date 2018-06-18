@@ -74,6 +74,8 @@
       purpose: "{{ az_environment }}"
       application: "{{ az_application }}"
       os: "{{ az_os_type_vm }}"
+  async: 1000
+  poll: 0
 
 - name: Add instances to inventory
   local_action:
