@@ -85,8 +85,8 @@
   local_action:
     module: add_host
     # name: "{{ azure_vm.properties.networkProfile.networkInterfaces[0].properties.ipConfigurations[0].properties.publicIPAddress.properties.ipAddress }}"
-    name: "{{ r_azure_public_ip.ipaddress }}"
-    ansible_host: "{{ r_azure_public_ip.ipaddress }}"
+    name: "{{ az_vm_name }}"
+    ansible_host: "{{ r_azure_public_ip.ip_address }}"
     # ansible_host: "{{ azure_vm.properties.networkProfile.networkInterfaces[0].properties.ipConfigurations[0].properties.publicIPAddress.properties.ipAddress }}"
     ansible_user: "{{ instance_ansible_user }}"
     ansible_port: "{{ instance_ansible_port }}"
