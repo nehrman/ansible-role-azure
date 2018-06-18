@@ -78,9 +78,6 @@
   async: 1000
   poll: 0
 
-- debug:
-    var: r_azure_public_ip
-
 - name: Add instances to inventory
   local_action:
     module: add_host
