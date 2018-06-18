@@ -37,6 +37,7 @@
     resource_group: "{{ az_resourcegroup_name }}"
     allocation_method: "{{ az_public_ip_method }}"
     name: "{{ az_public_ip_name }}"
+  register: r_azure_public_ip
 
 - name: Create NIC for Web servers
   local_action:
@@ -76,10 +77,9 @@
       os: "{{ az_os_type_vm }}"
   async: 1000
   poll: 0
-  register: r_azure_vm
 
 - debug:
-    var: r_azure_vm
+    var: r_azure_public_ip
 
 - name: Add instances to inventory
   local_action:
