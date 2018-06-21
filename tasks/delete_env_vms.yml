@@ -1,7 +1,5 @@
 ---
 - name:  Delete {{ az_vm_name }} VM from {{ az_resourcegroup_name }} on {{ az_region }}
-  block:
-    name:
   local_action:
     module: azure_rm_virtualmachine
     name: "{{ az_vm_name }}"
