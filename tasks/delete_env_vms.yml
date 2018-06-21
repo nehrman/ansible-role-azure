@@ -1,7 +1,8 @@
 ---
 - name:  Delete {{ az_vm_name }} VM from {{ az_resourcegroup_name }} on {{ az_region }}
   local_action:
-    moduleazure_rm_virtualmachine: {{ az_vm_name }}
+    module: azure_rm_virtualmachine
+    name: {{ az_vm_name }}
     resource_group: "{{ az_resourcegroup_name }}"
     location: "{{ az_location }}"
     availability_set: "{{ az_availabilitysets_name }}"
