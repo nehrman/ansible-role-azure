@@ -6,8 +6,6 @@
     state: present
     tags:
       purpose: "{{ az_environment }}"
-#      customer: "{{ az_customer }}"
-#   register: return_azrg
 
 - name:  Create {{ az_virtualnet_name }} Virtual Network on {{ az_region }}
   azure_rm_virtualnetwork:
@@ -18,8 +16,6 @@
     state: present
     tags:
       purpose: "{{ az_environment }}"
-#      customer: "{{ az_customer }}"
-   #    register: return_azvirtnet
 
 - name:  Create {{ az_subnet_name }} Subnet on {{ az_region }}
   azure_rm_subnet:
@@ -30,8 +26,6 @@
     state: present
     tags:
       purpose: "{{ az_environment }}"
-#      customer: "{{ az_customer }}"
-#    register: return_azsubnet
 
 - name: Create "{{ az_storageaccount_name }}" Storage Account for "{{ az_resourcegroup_name }}"
   azure_rm_storageaccount:
@@ -40,12 +34,10 @@
     location: "{{ az_location }}"
     type: "{{ az_storageaccount_type }}"
     kind: "{{ az_storageaccount_kind }}"
-#    access_tier: "{{ az_storageaccount_tier }}"
     state: present
     tags:
       purpose: "{{ az_environment }}"
-#      customer: "{{ az_customer }}"
-#    register: return_azstoaccn
+  when: az_blob_storage == True
 
 - name: Create {{ az_availabilitysets_name }}
   azure_rm_availabilityset:
