@@ -1,5 +1,5 @@
 ---
 - name: Gather Azure Facts and build a list
-  azure_az_resourcegroup_facts:
+  azure_rm_resourcegroup_facts:
     name: "{{ az_resourcegroup_name }}"
     tags: "{{ az_application }}"
