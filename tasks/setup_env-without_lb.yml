@@ -1,0 +1,55 @@
+---
+- name:  Create {{ az_resourcegroup_name }} Resource Group on {{ az_region }}
+  azure_rm_resourcegroup:
+    location: "{{ az_location }}"
+    name: "{{ az_resourcegroup_name }}"
+    state: present
+    tags:
+      purpose: "{{ az_environment }}"
+#      customer: "{{ az_customer }}"
+#   register: return_azrg
+
+- name:  Create {{ az_virtualnet_name }} Virtual Network on {{ az_region }}
+  azure_rm_virtualnetwork:
+    location: "{{ az_location }}"
+    resource_group: "{{ az_resourcegroup_name }}"
+    name: "{{ az_virtualnet_name }}"
+    address_prefixes_cidr: "{{ az_vn_cidr_prefix }}"
+    state: present
+    tags:
+      purpose: "{{ az_environment }}"
+#      customer: "{{ az_customer }}"
+   #    register: return_azvirtnet
+
+- name:  Create {{ az_subnet_name }} Subnet on {{ az_region }}
+  azure_rm_subnet:
+    name: "{{ az_subnet_name }}"
+    resource_group: "{{ az_resourcegroup_name }}"
+    virtual_network_name: "{{ az_virtualnet_name }}"
+    address_prefix_cidr: "{{ az_sub_cidr_prefix }}"
+    state: present
+    tags:
+      purpose: "{{ az_environment }}"
+#      customer: "{{ az_customer }}"
+#    register: return_azsubnet
+
+- name: Create "{{ az_storageaccount_name }}" Storage Account for "{{ az_resourcegroup_name }}"
+  azure_rm_storageaccount:
+    name: "{{ az_storageaccount_name }}"
+    resource_group: "{{ az_resourcegroup_name }}"
+    location: "{{ az_location }}"
+    type: "{{ az_storageaccount_type }}"
+    kind: "{{ az_storageaccount_kind }}"
+#    access_tier: "{{ az_storageaccount_tier }}"
+    state: present
+    tags:
+      purpose: "{{ az_environment }}"
+#      customer: "{{ az_customer }}"
+#    register: return_azstoaccn
+
+- name: Create {{ az_availabilitysets_name }}
+  azure_rm_availabilityset:
+    resource_group: "{{ az_resourcegroup_name }}"
+    name: "{{ az_availabilitysets_name }}"
+    location: "{{ az_location }}"
+    sku: "{{ az_availabilitysets_sku }}"
