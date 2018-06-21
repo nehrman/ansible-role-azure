@@ -20,10 +20,10 @@
 
 - name:  Delete {{ azure_rm_publicipaddress }} Public IP from {{ az_resourcegroup_name }} on {{ az_region }}
   local_action:
-    module: azure_rm_networkinterface
+    module: azure_rm_publicipaddess
     resource_group: "{{ az_resourcegroup_name }}"
     location: "{{ az_location }}"
-    name: "{{ azure_rm_publicipaddress }}"
+    name: "{{ az_public_ip_name }}"
     state: absent
 
 - name: Delete {{ az_vm_disk_name }} Disk from {{ az_resourcegroup_name }} on {{ az_region }}
