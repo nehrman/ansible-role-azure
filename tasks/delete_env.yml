@@ -1,7 +1,6 @@
 ---
 - name:  Delete {{ az_resourcegroup_name }} Resource Group on {{ az_region }}
-  local_action:
-    module: azure_rm_resourcegroup
+  azure_rm_resourcegroup:
     location: "{{ az_location }}"
     name: "{{ az_resourcegroup_name }}"
     force: yes
