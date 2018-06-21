@@ -5,27 +5,28 @@
     resource_group: "{{ az_resourcegroup_name }}"
     location: "{{ az_location }}"
     availability_set: "{{ az_availabilitysets_name }}"
+    remove_on_absent: all
     state: absent
   async: 1000
   poll: 15
-
-- name:  Delete {{ az_vm_nic_name }} Nic from {{ az_resourcegroup_name }} on {{ az_region }}
-  azure_rm_networkinterface:
-    resource_group: "{{ az_resourcegroup_name }}"
-    location: "{{ az_location }}"
-    name: "{{ az_vm_nic_name }}"
-    state: absent
-
-- name:  Delete {{ az_public_ip_name }} Public IP from {{ az_resourcegroup_name }} on {{ az_region }}
-  azure_rm_publicipaddress:
-    resource_group: "{{ az_resourcegroup_name }}"
-    location: "{{ az_location }}"
-    name: "{{ az_public_ip_name }}"
-    state: absent
-
-- name: Delete {{ az_vm_disk_name }} Disk from {{ az_resourcegroup_name }} on {{ az_region }}
-  azure_rm_managed_disk:
-    resource_group: "{{ az_resourcegroup_name }}"
-    location: "{{ az_location }}"
-    name: "{{ az_vm_disk_name }}"
-    state: absent
+#
+# - name:  Delete {{ az_vm_nic_name }} Nic from {{ az_resourcegroup_name }} on {{ az_region }}
+#   azure_rm_networkinterface:
+#     resource_group: "{{ az_resourcegroup_name }}"
+#     location: "{{ az_location }}"
+#     name: "{{ az_vm_nic_name }}"
+#     state: absent
+#
+# - name:  Delete {{ az_public_ip_name }} Public IP from {{ az_resourcegroup_name }} on {{ az_region }}
+#   azure_rm_publicipaddress:
+#     resource_group: "{{ az_resourcegroup_name }}"
+#     location: "{{ az_location }}"
+#     name: "{{ az_public_ip_name }}"
+#     state: absent
+#
+# - name: Delete {{ az_vm_disk_name }} Disk from {{ az_resourcegroup_name }} on {{ az_region }}
+#   azure_rm_managed_disk:
+#     resource_group: "{{ az_resourcegroup_name }}"
+#     location: "{{ az_location }}"
+#     name: "{{ az_vm_disk_name }}"
+#     state: absent
