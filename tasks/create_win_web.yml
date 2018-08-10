@@ -68,6 +68,7 @@
     admin_username: "{{ az_vm_admin_user }}"
     admin_password: "{{ az_vm_admin_pwd }}"
     managed_disk_type: "{{ az_managed_disk_type }}"
+    state: started
     image:
       name: "{{ az_image_name }}"
       resource_group: "{{ az_image_resource_group }}"
